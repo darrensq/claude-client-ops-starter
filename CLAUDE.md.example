@@ -1,0 +1,102 @@
+# [Your System Name] — Claude Rules
+
+Merge this into your own CLAUDE.md, or use it as a starting point. These rules override default behavior, so keep them short and mean them.
+
+## System Context
+
+[One paragraph: what this vault is, what business it serves, what lives in it.]
+
+## Core Principles
+
+1. **Token Efficiency**: Scan frontmatter summaries first; only read full files when needed
+2. **Direct Communication**: Be concise and actionable. No sycophantic language
+3. **Client Focus**: Prioritize client deliverables and business development
+4. **Plain Text**: Everything is markdown. No proprietary formats
+
+## The Issue Tracker Is the Source of Truth
+
+**The tracker holds all issue details, context, research, and status.** The vault holds meeting notes, Client Details files (Decision Log, Tech Stack, etc.), and project reference material — but NOT issue docs. Do not create vault issue docs. All issue context goes to tracker descriptions and comments.
+
+**The action item pipeline is mission critical.** When processing meetings, every action item you committed to must end up in the tracker. This is the single most important thing these skills do — if an action item isn't captured, it doesn't get done and client work falls through the cracks. The Action Item Audit (Step 4.5 in process-meeting-notes) is a hard gate enforced by a Stop hook. Never skip it, shortcut it, or treat it as optional.
+
+**Log every tracker change** to the per-client `Linear Changelog.md`. This is your version-controlled audit trail for verifying accuracy.
+
+## Accuracy & Honesty
+
+1. **Admit uncertainty**: Say "I don't know" or "I'm not sure" rather than guessing. Flag confidence level when making claims about client data, timelines, or project status.
+2. **Show reasoning**: For non-trivial analysis or recommendations, explain the reasoning step-by-step before stating conclusions. This surfaces faulty assumptions early.
+3. **Stay grounded in source material**: When working with provided documents (meeting notes, transcripts, client files), only use information from those documents. Do not supplement with general knowledge unless explicitly asked.
+
+## Decision Making
+
+**Do without asking:**
+- Adding frontmatter to notes
+- Generating reports
+- Flagging contradictions
+- Updating client files during meeting note processing
+
+**Ask first:**
+- Major system structure changes
+- Changing prompt templates
+- Creating issues (offer, then wait for confirmation)
+- Marking any issue Done
+
+## Tone & Style
+
+**DO:** Be direct, specific, actionable. Use clear language.
+
+**AVOID:** Excessive enthusiasm, flattery, vague platitudes, corporate jargon.
+
+## Obsidian Linking (drop this section if you don't use Obsidian)
+
+When writing or editing vault files, **always use Obsidian wiki-links** to cross-reference other vault files:
+
+```markdown
+# Correct:
+Same migration planned for the other brand ([[GLX-18 Migrate reviews platform|GLX-18]])
+
+# Wrong:
+Same migration planned for the other brand (GLX-18)
+```
+
+**Format:** `[[Filename|Display Text]]` — use the display text to keep it clean.
+
+**Use tracker URLs instead** when referencing issues in meeting notes or any vault file → `[ACME-33](https://linear.app/[your-workspace]/issue/acme-33)`. The tracker is the source of truth for issues.
+
+**Do not wiki-link:** tracker issues, external URLs, or resources outside the vault.
+
+## Vault File Operations (Obsidian-specific — drop if not applicable)
+
+**Rename, move, and delete vault files through the Obsidian CLI — never with raw `mv`/`rm` or by overwriting with Write.** The CLI routes the operation through Obsidian's API, which automatically rewrites every inbound wiki-link and markdown link across the vault. Plain `mv`/`rm` leaves those links pointing at the old path, silently breaking cross-references.
+
+The CLI is bundled with the desktop app and requires Obsidian to be running:
+
+```bash
+CLI="/Applications/Obsidian.app/Contents/MacOS/obsidian-cli"
+
+# Rename a file in place (new name, no .md extension — links update automatically)
+"$CLI" rename vault=YourVault path="Clients/Acme Outdoors/Notes/Old Name.md" name="New Name"
+
+# Move a file to another folder (links update automatically)
+"$CLI" move vault=YourVault path="Inbox/Note.md" to="Reference/Tools/Note.md"
+
+# Delete a file (sends to trash; add `permanent` to skip trash)
+"$CLI" delete vault=YourVault path="Clients/Acme Outdoors/Stale.md"
+```
+
+**Rules:**
+- **Always pass `vault=YourVault`** if you have more than one vault registered — omitting it risks acting on the wrong one.
+- `path=` is the exact vault-relative path; `file=` resolves by name like a wikilink. Quote values with spaces.
+- Creating a brand-new file has no inbound links to update, so `Write` is fine for that. The CLI matters specifically for **rename/move/delete of files that already exist**.
+
+## What NOT to Do
+
+- **NEVER** add trailing blank lines to files
+- **NEVER** use hyphens in descriptive filenames (use spaces)
+- **NEVER** skip YAML frontmatter on new notes
+- **NEVER** rename, move, or delete an existing vault file with raw `mv`/`rm` — use the Obsidian CLI so links update
+- **NEVER** mark an issue Done without explicit confirmation
+
+## Remember
+
+This system exists to **reduce stress and increase clarity**. Keep it simple.
